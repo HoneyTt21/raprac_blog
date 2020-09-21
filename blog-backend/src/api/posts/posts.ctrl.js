@@ -47,4 +47,36 @@ exports.remove = (ctx) => {
     ctx.status = 204;
 };
 
-check page 629
+exports.replace = (ctx) => {
+    const {id} = ctx.params;
+    const index = posts.findIndex((p) => p.id.toString() === id);
+    if (index === -1) {
+        ctx.status = 404;
+        ctx.body = {
+            message: "Post doesn't exist",
+        };
+        return;
+    }
+    posts[index] = {
+        id,
+        ...ctx.request.body,
+    };
+    ctx.body = posts[index];
+};
+
+exports.update = (ctx) => {
+    const {id} = ctx.params;
+    const index = posts.findIndex((p) => p.id.toString() === id);
+    if (index === -1) {
+        ctx.status = 404;
+        ctx.body = {
+            message: "Post doesn't exist",
+        };
+        return;
+    }
+    posts[index] = {
+        ...posts[index],
+        ...ctx.request.body,
+    };
+    ctx.body = posts[index];
+};
